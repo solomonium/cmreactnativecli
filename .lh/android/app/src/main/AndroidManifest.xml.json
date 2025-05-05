@@ -1,0 +1,22 @@
+{
+    "sourceFile": "android/app/src/main/AndroidManifest.xml",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1746486165366,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1746486194239,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n <manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n-    package=\"com.yourcompany.solocmrn\">\n+    package=\"com.cmreactnativecli\">\n \n     <uses-permission android:name=\"android.permission.INTERNET\" />\n \n     <application\n"
+                }
+            ],
+            "date": 1746486165366,
+            "name": "Commit-0",
+            "content": "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"com.yourcompany.solocmrn\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n\n    <application\n      android:name=\".MainApplication\"\n      android:label=\"@string/app_name\"\n      android:icon=\"@mipmap/ic_launcher\"\n      android:roundIcon=\"@mipmap/ic_launcher_round\"\n      android:allowBackup=\"false\"\n      android:theme=\"@style/AppTheme\"\n      android:supportsRtl=\"true\">\n      <activity\n        android:name=\".MainActivity\"\n        android:label=\"@string/app_name\"\n        android:configChanges=\"keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode\"\n        android:launchMode=\"singleTask\"\n        android:windowSoftInputMode=\"adjustResize\"\n        android:exported=\"true\">\n        <intent-filter>\n            <action android:name=\"android.intent.action.MAIN\" />\n            <category android:name=\"android.intent.category.LAUNCHER\" />\n        </intent-filter>\n      </activity>\n    </application>\n</manifest>\n"
+        }
+    ]
+}
