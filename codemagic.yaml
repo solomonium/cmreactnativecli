@@ -4,6 +4,8 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
+      groups:
+        - app_center_credentials
       android_signing:
         - solocmrn
       vars:
@@ -26,6 +28,17 @@ workflows:
           fi
           cd android
           ./gradlew bundleRelease
+         - name: Publish to App Center
+        script: |
+          echo 'Installing App Center CLI tools'
+          echo "Publishing $ipaPath to App Center"
+          appcenter distribute release \
+              --group Collaborators \
+              --file $ARTIFACT_PATH \
+              --release-notes 'App submission via Codemagic' \
+              --app $ORGANIZATION_NAME/$APP_CENTER_APP_NAME \
+              --token $APP_CENTER_TOKEN \
+              --quiet
     artifacts:
       - android/app/build/outputs/**/*.aab
     publishing:
