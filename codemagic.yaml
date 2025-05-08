@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       groups:
-        - app_center_credentials # Ensure this group includes APP_CENTER_TOKEN, ORGANIZATION_NAME, APP_CENTER_APP_NAME
+        - app_center_credentials
       android_signing:
         - solocmrn
       vars:
