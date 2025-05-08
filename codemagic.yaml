@@ -31,6 +31,17 @@ workflows:
           echo "Publishing to App Center..."
           echo "Artifact path: $ARTIFACT_PATH"
           ls -la "$ARTIFACT_PATH" || echo "ERROR: APK not found!"
+      - name: Debug App Center Access
+        script: |
+          echo "--- Debug Info ---"
+          echo "Organization: $ORGANIZATION_NAME"
+          echo "App Name: $APP_CENTER_APP_NAME"
+          echo "Token: ${APP_CENTER_TOKEN:0:4}...${APP_CENTER_TOKEN: -4}"
+          echo "Artifact: $ARTIFACT_PATH"
+          ls -la "$ARTIFACT_PATH"
+
+            # Test API access
+          appcenter apps list --token "$APP_CENTER_TOKEN" || echo "❌ Token is invalid!"
           appcenter distribute release \
               --group "Codemagic" \
               --file "$ARTIFACT_PATH" \
