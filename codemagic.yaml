@@ -5,11 +5,12 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       groups:
-        - app_center_credentials
+        - app_center_credentials # Ensure this group includes APP_CENTER_TOKEN, ORGANIZATION_NAME, APP_CENTER_APP_NAME
       android_signing:
         - solocmrn
       vars:
         PACKAGE_NAME: 'com.cmreactnativecli'
+        ARTIFACT_PATH: '$CM_BUILD_DIR/android/app/build/outputs/apk/release/app-release.apk' # Explicit path for Android APK
       node: latest
     scripts:
       - name: Install npm dependencies
@@ -20,28 +21,25 @@ workflows:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       - name: Build Android release
         script: |
-          LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME")
-          if [ -z $LATEST_GOOGLE_PLAY_BUILD_NUMBER ]; then
-          UPDATED_BUILD_NUMBER=$BUILD_NUMBER
-          else
-              UPDATED_BUILD_NUMBER=$(($LATEST_GOOGLE_PLAY_BUILD_NUMBER + 1))
-          fi
           cd android
-          ./gradlew bundleRelease
+          ./gradlew assembleRelease  # Builds APK (not AAB)
+          ls -la "$CM_BUILD_DIR/android/app/build/outputs/apk/release/"  # Debug: Verify APK exists
       - name: Publish to App Center
         script: |
-          echo 'Installing App Center CLI tools'
+          echo "Installing App Center CLI..."
           npm install -g appcenter-cli
-          echo "Publishing $ipaPath to App Center"
+          echo "Publishing to App Center..."
+          echo "Artifact path: $ARTIFACT_PATH"
+          ls -la "$ARTIFACT_PATH" || echo "ERROR: APK not found!"
           appcenter distribute release \
-              --group Codemagic \
-              --file $ARTIFACT_PATH \
-              --release-notes 'App submission via Codemagic' \
-              --app $ORGANIZATION_NAME/$APP_CENTER_APP_NAME \
-              --token $APP_CENTER_TOKEN \
+              --group "Codemagic" \
+              --file "$ARTIFACT_PATH" \
+              --release-notes "App submission via Codemagic" \
+              --app "$ORGANIZATION_NAME/$APP_CENTER_APP_NAME" \
+              --token "$APP_CENTER_TOKEN" \
               --quiet
     artifacts:
-      - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/*.apk # Collect APK (optional)
     publishing:
       email:
         recipients:
